@@ -118,6 +118,20 @@ function eseguiEferma(message, startTime, stopTime) {
 // 🏆 Snack 8 (BONUS)
 // Crea una funzione che simula un conto alla rovescia.
 // ✅ Scrivi una funzione contoAllaRovescia che accetta un numero n e stampa il conto alla rovescia da n a 0, con un intervallo di 1 secondo tra ogni numero. Quando arriva a 0, stampa "Tempo scaduto!" e interrompe il timer.
+function contoAllaRovescia(startTime) {
+	let countDown = startTime + 1
+	const intervalId = setInterval(() => {
+		countDown -= 1
+		if (countDown === 0) {
+			clearInterval(intervalId)
+			console.log("Tempo Scaduto!")
+		} else {
+			console.log(countDown);
+		}
+	}, 1000)
+}
+
+// contoAllaRovescia(10)
 
 //===========================================================
 
@@ -125,6 +139,21 @@ function eseguiEferma(message, startTime, stopTime) {
 // Creare una funzione che esegue una sequenza di operazioni con ritardi.
 // ✅ Scrivi una funzione sequenzaOperazioni che accetta un array di operazioni (funzioni) e un tempo di intervallo.
 // Ogni operazione deve essere eseguita in sequenza con un ritardo uguale al tempo di intervallo.
+const operazioni = [
+	() => console.log("Operazione 1"),
+	() => console.log("Operazione 2"),
+	() => console.log("Operazione 3")
+]
+
+function sequenzaOperazioni(operazioni, intervallo) {
+	operazioni.forEach((operazione, indice) => {
+		setTimeout(() => {
+			operazione()
+		}, intervallo * indice)
+	})
+}
+
+// sequenzaOperazioni(operazioni, 2000)
 
 //===========================================================
 
@@ -132,3 +161,26 @@ function eseguiEferma(message, startTime, stopTime) {
 // Creare un throttler per limitare l’esecuzione di una funzione.
 // ✅ Scrivi una funzione creaThrottler che accetta una funzione e  un tempo `limite`.
 // Restituisce una nuova funzione che, quando chiamata ripetutamente, esegue l'operazione originale al massimo una volta ogni n millisecondi.
+
+function creaThrottler(callback, limite) {
+	let ultimaEsecuzione = 0;
+	return function (...args) {
+		const ora = Date.now();
+		if (ora - ultimaEsecuzione >= limite) {
+			ultimaEsecuzione = ora;
+			callback(...args)
+		} else {
+			console.log('Esecuzione richiesta troppo presto')
+		}
+	}
+}
+
+
+const throttledLog = creaThrottler(() => console.log("Funzione eseguita"), 2000)
+
+// throttledLog()
+// throttledLog()
+// setTimeout(() => {
+// 	throttledLog()
+// 	console.log("Eseguita dopo 2 secondi")
+// }, 2000)
